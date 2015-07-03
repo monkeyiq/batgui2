@@ -1,0 +1,20 @@
+
+@media screen and (min-width: 768px) {
+    .custom-class {
+        width: 90%; /* either % (e.g. 60%) or px (400px) */
+    }
+}
+code { white-space: pre; }
+.codeline {
+    font-family: monospace;
+}
+.codemeta {
+    font-family: monospace;
+    color: red;
+}
+
+
+td,
+th {
+  padding: 4;
+}

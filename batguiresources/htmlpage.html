@@ -1,0 +1,108 @@
+    <h1>Binary Analysis tool result viewer</h1>
+    <p>
+      On the left you will find a tree that can be browsed. Results can be shown by clicking on the item. The tree contains extra information to help you get to the right information straightaway:
+
+      <ul>
+	<li>&empty; : the file is empty</li>
+	<li>&rarr; : the file is a symbolic link, pointing to the file following &rarr;</li>
+	<li>&#x24b6; : the file is an Android Dalvik file</li>
+	<li>&#x24b8; : the file is a compressed file</li>
+	<li>&#x24b9; : the file is a directory (possibly empty)</li>
+	<li>&#x229c; : the file is a duplicate of another file</li>
+	<li>&#x24bc; : the file is a graphics file</li>
+	<li>&#x24c1; : the file contains a Linux kernel or Linux kernel module </li>
+	<li>&#x24c7; : the file is a resources file</li>
+	<li>&#x24c8; : the file is statically linked</li>
+	<li>&#x24c9; : the file only contains text</li>
+	<li>&#x272a; : strings were found that could be matched with Open Source software</li>
+      </ul>
+    </p>
+
+    <p>
+      On the right there are views of the file. There are eight main views of the file:
+
+      <ol>
+	<li>Overview</li>
+	<li>Unique strings</li>
+	<li>Assigned strings</li>
+	<li>Unmatched strings</li>
+	<li>Variable names</li>
+	<li>Function names</li>
+	<li>ELF analysis</li>
+	<li>Alternate view (advanced mode only)</li>
+      </ol>
+    </p>
+    <h2>Overview</h2>
+    <p>
+      The overview displays various types of information about the file, such as name, relative path inside a file system or compressed file, size, SHA256 checksum (if any), information about which packages were found (if available), and so on.
+    </p>
+    <p>
+      If licensing information was available during scanning it is also displayed here. Licensing information is currently only based on unique matches. Non-unique matches are not taken into account. The licensing information is not per se correct!
+    </p>
+    <h2>Uniquely matched strings</h2>
+    <p>
+      In this window you will see a list of unique matches per package. For each unique match you will see:
+      <ul>
+	<li>file name</li>
+	<li>version(s)</li>
+	<li>line number</li>
+	<li>SHA256 checksum</li>
+      </ul>
+    </p>
+    <p>
+      Each line number is clickable. If there is an archive of pregenerated HTML source code files the corresponding source code file will be shown when clicking on the link.
+    </p>
+    <p>
+      If the characters { and } are in the version number it means that the version numbers have been collapsed for space reasons. The full version number can be reconstructed by taking the part before the { and a version number in between { and }. Example: "2.6.{0, 1, 2}" expands to "2.6.0, 2.6.1, 2.6.2".
+    </p>
+    <h2>Unmatched strings</h2>
+    <p>
+      In this tab you can find the strings that were not matched. These strings can contain useful hints about which packages are included, but not detected.
+    </p>
+    <h2>Variable names</h2>
+    <p>
+      This tab contains information about any variables (C), or fields (Java) were matched.
+    </p>
+    <h2>Function names</h2>
+    <p>
+      This tab contains information about any functions (C), or methods (Java) were matched.
+    </p>
+    <h2>ELF analysis</h2>
+    <p>
+      In this tab you will find information about ELF files, like which libraries were included and if symbols can be resolved with the files contained in the top level file. If possible a picture with the dynamic linking graph is included.
+    </p>
+    <h2>Alternate view (advanced mode only)</h2>
+    <p>
+      In this tab you will find two different representations of the binary file:
+
+      <ol>
+	<li>picture view: each byte value in the binary file has been assigned a grayscale value. Bytes with value <tt>0x00</tt> are black, bytes with value <tt>0xff</tt> are white. Other bytes are assigned values in between.</li>
+	<li>hexdump view</li>
+      </ol>
+    </p>
+    <p>
+      By clicking somewhere on the picture the hexdump view will automatically scroll to the textual representation of the clicked byte. This will quickly allow you to view interesting boundaries.
+    </p>
+    <h1>Configuring the BAT viewer</h1>
+    <h2>Display filters</h2>
+    <p>
+      Each file is tagged (if possible) by the scanning process. Filters for the following file types are currently defined:
+
+      <ul>
+	<li>audio files</li>
+	<li>empty files</li>
+	<li>graphics files</li>
+	<li>PDF files</li>
+	<li>resource files</li>
+	<li>symbolic links</li>
+	<li>text files</li>
+	<li>video files</li>
+      </ul>
+    </p>
+    <p>
+      By default no filters have been applied. The filters can be accessed via Configuration &rarr; Filter Configuration.
+    </p>
+    <h2>Advanced mode</h2>
+    <p>
+      Advanced mode can be entered via Configuration &rarr; General Configuration. The box Advanced mode should be checked to enter advanced mode. As soon as advanced mode is entered extra data from the results file (if available) will be unpacked and an extra tab will appear. It is not advised to run advanced mode: it can be a big strain on resources.
+    </p>

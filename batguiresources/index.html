@@ -1,0 +1,411 @@
+
+<script language="javascript">
+  // Completes the full-name control and
+  // shows the submit button
+  function completeAndReturnName() {
+    var fname = document.getElementById('fname').value;
+    var lname = document.getElementById('lname').value;
+    var full = fname + ' ' + lname;
+
+    full += ' ' + batgui.getPage(fname);
+    document.getElementById('fullname').value = full;
+    document.getElementById('submit-btn').style.display = 'block';
+
+    return full;
+  }
+       function completeAndReturnName() {
+          return 'fsdfdsfsd';
+	  }
+	   function some_js_function( path ) {
+               return 'hi there';
+	   }
+           function clearPage( element ) {
+	       document.getElementById( element ).innerHTML = "  ";
+	   }
+	   function OnSelectionCleared() {
+	        clearPage("overview");
+	        clearPage("uniquepage");
+	        clearPage("assignedpage");
+	        clearPage("unmatchedpage");
+	        clearPage("variablepage");
+	        clearPage("functionpage");
+	        clearPage("elfpage");
+	        clearPage("hexpage");
+	   }
+	   function OnFileWithoutReportsSelected(path,name,realpath,size,magic)
+	   {
+      	        OnSelectionCleared();
+		if( name == "" ) {
+                    document.getElementById( "overview" ).innerHTML = document.getElementById( "standardHelp" ).innerHTML;
+		    $('html, body').animate({scrollTop:0}, 'slow');
+		    //window.scrollTo(0,0);
+      		    return;
+		}
+		
+                txt =  "<h2>Overview</h2>";
+		txt += "<table>";
+		txt += "<tr><td><b>Name</b></td><td>" + name + "</td></tr>";
+		txt += "<tr><td><b>Path</b></td><td>" + path + "</td></tr>";
+		txt += "<tr><td><b>Absolute path</b></td><td>" + realpath + "</td></tr>";
+		txt += "<tr><td><b>Size</b></td><td>" + size + " bytes</td></tr>";
+		txt += "<tr><td><b>File type</b></td><td>" + magic + "</td></tr>";
+		txt += "</table>";
+		document.getElementById( "overview" ).innerHTML = txt;
+		$('#myTab a[href="#overview"]').tab('show')
+		$('html, body').animate({scrollTop:0}, 'slow');
+	   }
+           function setPage( element, path, pagename, code ) {
+	       data = batgui.getPage( path, pagename );
+	       document.getElementById( element ).innerHTML = data;
+           }
+	   function appendToHexLine( idx, msg )
+	   {
+	       key = "hexline" + idx;
+	       document.getElementById( key ).innerHTML = document.getElementById( key ).innerHTML + msg;
+           }
+           function pad( s, l ) {
+	       l -= s.length;
+	       ret = "";
+	       for( i=0; i<l; i++ ) {
+	          ret += "0";
+		  }
+               ret += s;
+	       return ret;
+	       }
+
+           function modifyAnchors() {
+                hdir = batgui.getHTMLDir();
+	        earl = this.href;
+		earl = earl.substring(8);
+		earlparts = earl.split("#");
+		linksha256sum = earlparts[0];
+		linenumber = earlparts[1];
+		earl = hdir + "/" + linksha256sum[0]
+                       + "/" + linksha256sum[1]
+                       + "/" + linksha256sum[2]
+		       + "/" + linksha256sum
+		       + ".html.bz2";
+                var data = batgui.readFile( earl );
+		$("#modaltitle").html("Viewing file...");
+		$("#modalbody").html(data);
+                $('#myModal').modal('show');
+
+		$('#myModal').on('hide.bs.modal', function (e) {
+    		$("#modalbody").html("");
+                })
+		$('#myModal').on('shown.bs.modal', function (e) {
+                     // uses ID tag		       
+//                   $('#myModal').animate({
+//		           scrollTop: $('#line' + linenumber).offset().top
+//  		     }, 500);
+
+                     // uses an 'a' element with name=lineNNN
+                     $('#myModal').animate({
+		        scrollTop: $('#modalbody').find('a[name=line' + linenumber + ']').offset().top
+  		     }, 500);
+                })
+      	        return false;
+           }
+
+	   function updateHexdumpPage(p) {
+	       setPage("hexpage",      p, "hexdump",   1000000 );
+	   
+	       // update the tags for the scan of each line in the hexpage.
+               t = batgui.getScanHighlights( p );
+	       for( i=0; i < t.length; i++ )
+	       {
+	           offset   = t[i][0];
+	           scanname = t[i][1];
+	           sz       = t[i][2];
+
+		   linenum = Math.floor(offset/16)+1;
+		   txt = " " + scanname + " at 0x" + pad( offset.toString(16), 8 );
+	           appendToHexLine( linenum, txt );
+	       }
+	   }
+	   function OnFileSelected( p ) {
+//	       var html = batgui.getPage(p,"elfreport");
+//	       document.getElementById("elfpage").innerHTML = html;
+
+
+	       setPage("overview",     p, "guireport", false);
+	       setPage("uniquepage",   p, "unique",    false);
+	       setPage("assignedpage", p, "assigned",  false);
+	       setPage("unmatchedpage",p, "unmatched", false);
+	       setPage("variablepage", p, "names",     false);
+	       setPage("functionpage", p, "functionnames", false );
+	       setPage("elfpage",      p, "elfreport", false );
+	       document.getElementById( "hexpage" ).innerHTML = "";
+  	       activeTab = $('.nav-tabs .active > a').attr('href');
+	       if( activeTab == "#hexpage" ) {
+ 	           updateHexdumpPage(p);
+               }
+  	       jQuery( '#uniquepage a' )  .click( modifyAnchors );
+  	       jQuery( '#variablepage a' ).click( modifyAnchors );
+  	       jQuery( '#functionpage a' ).click( modifyAnchors );
+	       
+	       return p;
+	   }
+</script>
+
+
+
+<html>
+   <head>
+     <title>BATGUI</title>
+     <script language="javascript">
+	 </script>
+     
+	 <script>
+	   var head = document.head
+
+	   link = document.createElement('link')
+	   link.type = 'text/css'
+	   link.rel  = 'stylesheet'
+	   link.href = batgui.getWebResourceUrl('bootstrap/css/bootstrap.min.css')
+	   head.appendChild(link)
+
+	   link = document.createElement('link')
+	   link.type = 'text/css'
+	   link.rel  = 'stylesheet'
+	   link.href = batgui.getWebResourceUrl('custom.css')
+	   head.appendChild(link)
+	   
+	   script = document.createElement('script')
+	   script.type = 'text/javascript'
+	   script.src  = batgui.getWebResourceUrl('jquery/jquery.min.js')
+	   head.appendChild(script)
+
+	   script = document.createElement('script')
+	   script.type = 'text/javascript'
+	   script.src  = batgui.getWebResourceUrl('bootstrap/js/bootstrap.min.js')
+	   head.appendChild(script);
+
+	   $( document ).ready(function() {
+               document.getElementById( "overview" ).innerHTML = document.getElementById( "standardHelp" ).innerHTML;
+
+	       });
+
+	       function myOnLoad() {
+                    document.getElementById( "overview" ).innerHTML = document.getElementById( "standardHelp" ).innerHTML;
+	            $("a[href='#hexpage']").on('shown.bs.tab', function(e) {
+	                p = batgui.getActivePath();
+    	                updateHexdumpPage( p );
+//		        setPage("hexpage",      p, "hexdump",   1000000 );
+//	                document.getElementById( "hexpage" ).innerHTML = "xxx";
+		    });
+               }
+	 </script>
+
+	 <!-- End of CSS/JS preamble -->
+
+   </head>
+   <body onLoad="myOnLoad()" >
+
+
+<div role="tabpanel">
+
+  
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist" id="myTab">
+    <li role="presentation" class="active">
+      <a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a>
+    </li>
+    <li role="presentation">
+      <a href="#uniquepage" aria-controls="uniquepage" role="tab" data-toggle="tab">Unique Strings</a>
+    </li>
+    <li role="presentation">
+      <a href="#assignedpage" aria-controls="assignedpage" role="tab" data-toggle="tab">Assigned Strings</a>
+    </li>
+    <li role="presentation">
+      <a href="#unmatchedpage" aria-controls="unmatchedpage" role="tab" data-toggle="tab">Unmatched Strings</a>
+    </li>
+    <li role="presentation">
+      <a href="#variablepage" aria-controls="variablepage" role="tab" data-toggle="tab">Variable Names</a>
+    </li>
+    <li role="presentation">
+      <a href="#functionpage" aria-controls="functionpage" role="tab" data-toggle="tab">Function Names</a>
+    </li>
+    <li role="presentation">
+      <a href="#elfpage" aria-controls="elfpage" role="tab" data-toggle="tab">ELF Analysis</a>
+    </li>
+    <li role="presentation">
+      <a href="#hexpage" aria-controls="hexpage" role="tab" data-toggle="tab">Hex view</a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="overview">...overview page...</div>
+    <div role="tabpanel" class="tab-pane" id="uniquepage">...unique strings page...</div>
+    <div role="tabpanel" class="tab-pane" id="assignedpage">...assigned strings page...</div>
+    <div role="tabpanel" class="tab-pane" id="unmatchedpage">...unmatched strings page...</div>
+    <div role="tabpanel" class="tab-pane" id="variablepage">...variable names page...</div>
+    <div role="tabpanel" class="tab-pane" id="functionpage">...function names page...</div>
+    <div role="tabpanel" class="tab-pane" id="elfpage">...ELF analysis page...</div>
+    <div role="tabpanel" class="tab-pane" id="hexpage"><code>...Hex page...
+    so there
+    three
+    </code></div>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="modaltitle">
+  <div class="modal-dialog custom-class" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modaltitle">Modal title</h4>
+      </div>
+      <div class="modal-body" id="modalbody">
+        ...zxczczxczx
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+</div>
+
+<!--
+  <script>
+  $(function () {
+    $('#myTab a:last').tab('show')
+  })
+  </script>
+-->
+
+<!-- 
+                        <form>
+                          <label for="fname">First name:</label>
+                          <input type="text" name="fname" id="fname"></input>
+                          <br />
+                          <label for="lname">Last name:</label>
+                          <input type="text" name="lname" id="lname"></input>
+                          <br />
+                          <label for="fullname">Full name:</label>
+                          <input disabled type="text" name="fullname" id="fullname"></input>
+                          <br />
+                          <input style="display: none;" type="submit" id="submit-btn"></input>
+                        </form>
+                      </body>
+-->
+
+<div style="visibility: hidden">
+  <div id="standardHelp">
+    <h1>Binary Analysis tool result viewer</h1>
+    <p>
+      On the left you will find a tree that can be browsed. Results can be shown by clicking on the item. The tree contains extra information to help you get to the right information straightaway:
+
+      <ul>
+	<li>&empty; : the file is empty</li>
+	<li>&rarr; : the file is a symbolic link, pointing to the file following &rarr;</li>
+	<li>&#x24b6; : the file is an Android Dalvik file</li>
+	<li>&#x24b8; : the file is a compressed file</li>
+	<li>&#x24b9; : the file is a directory (possibly empty)</li>
+	<li>&#x229c; : the file is a duplicate of another file</li>
+	<li>&#x24bc; : the file is a graphics file</li>
+	<li>&#x24c1; : the file contains a Linux kernel or Linux kernel module </li>
+	<li>&#x24c7; : the file is a resources file</li>
+	<li>&#x24c8; : the file is statically linked</li>
+	<li>&#x24c9; : the file only contains text</li>
+	<li>&#x272a; : strings were found that could be matched with Open Source software</li>
+      </ul>
+    </p>
+
+    <p>
+      On the right there are views of the file. There are eight main views of the file:
+
+      <ol>
+	<li>Overview</li>
+	<li>Unique strings</li>
+	<li>Assigned strings</li>
+	<li>Unmatched strings</li>
+	<li>Variable names</li>
+	<li>Function names</li>
+	<li>ELF analysis</li>
+	<li>Alternate view (advanced mode only)</li>
+      </ol>
+    </p>
+    <h2>Overview</h2>
+    <p>
+      The overview displays various types of information about the file, such as name, relative path inside a file system or compressed file, size, SHA256 checksum (if any), information about which packages were found (if available), and so on.
+    </p>
+    <p>
+      If licensing information was available during scanning it is also displayed here. Licensing information is currently only based on unique matches. Non-unique matches are not taken into account. The licensing information is not per se correct!
+    </p>
+    <h2>Uniquely matched strings</h2>
+    <p>
+      In this window you will see a list of unique matches per package. For each unique match you will see:
+      <ul>
+	<li>file name</li>
+	<li>version(s)</li>
+	<li>line number</li>
+	<li>SHA256 checksum</li>
+      </ul>
+    </p>
+    <p>
+      Each line number is clickable. If there is an archive of pregenerated HTML source code files the corresponding source code file will be shown when clicking on the link.
+    </p>
+    <p>
+      If the characters { and } are in the version number it means that the version numbers have been collapsed for space reasons. The full version number can be reconstructed by taking the part before the { and a version number in between { and }. Example: "2.6.{0, 1, 2}" expands to "2.6.0, 2.6.1, 2.6.2".
+    </p>
+    <h2>Unmatched strings</h2>
+    <p>
+      In this tab you can find the strings that were not matched. These strings can contain useful hints about which packages are included, but not detected.
+    </p>
+    <h2>Variable names</h2>
+    <p>
+      This tab contains information about any variables (C), or fields (Java) were matched.
+    </p>
+    <h2>Function names</h2>
+    <p>
+      This tab contains information about any functions (C), or methods (Java) were matched.
+    </p>
+    <h2>ELF analysis</h2>
+    <p>
+      In this tab you will find information about ELF files, like which libraries were included and if symbols can be resolved with the files contained in the top level file. If possible a picture with the dynamic linking graph is included.
+    </p>
+    <h2>Alternate view (advanced mode only)</h2>
+    <p>
+      In this tab you will find two different representations of the binary file:
+
+      <ol>
+	<li>picture view: each byte value in the binary file has been assigned a grayscale value. Bytes with value <tt>0x00</tt> are black, bytes with value <tt>0xff</tt> are white. Other bytes are assigned values in between.</li>
+	<li>hexdump view</li>
+      </ol>
+    </p>
+    <p>
+      By clicking somewhere on the picture the hexdump view will automatically scroll to the textual representation of the clicked byte. This will quickly allow you to view interesting boundaries.
+    </p>
+    <h1>Configuring the BAT viewer</h1>
+    <h2>Display filters</h2>
+    <p>
+      Each file is tagged (if possible) by the scanning process. Filters for the following file types are currently defined:
+
+      <ul>
+	<li>audio files</li>
+	<li>empty files</li>
+	<li>graphics files</li>
+	<li>PDF files</li>
+	<li>resource files</li>
+	<li>symbolic links</li>
+	<li>text files</li>
+	<li>video files</li>
+      </ul>
+    </p>
+    <p>
+      By default no filters have been applied. The filters can be accessed via Configuration &rarr; Filter Configuration.
+    </p>
+    <h2>Advanced mode</h2>
+    <p>
+      Advanced mode can be entered via Configuration &rarr; General Configuration. The box Advanced mode should be checked to enter advanced mode. As soon as advanced mode is entered extra data from the results file (if available) will be unpacked and an extra tab will appear. It is not advised to run advanced mode: it can be a big strain on resources.
+    </p>
+  </div>
+</div>
+		
+   </body>
+</html>
+		    

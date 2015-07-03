@@ -1,0 +1,330 @@
+<ui version="4.0" >
+  <class>batpyqtgui</class>
+  <widget class="QMainWindow" name="batpyqtgui" >
+    <property name="geometry" >
+      <rect>
+	<x>0</x>
+	<y>0</y>
+	<width>1280</width>
+	<height>720</height>
+      </rect>
+    </property>
+    <property name="windowTitle" >
+      <string>Binary Analysis Tool 2015 Interface</string>
+    </property>
+    <widget class="QWidget" name="centralwidget" >
+      <layout class="QGridLayout" >
+	<property name="margin" >
+	  <number>9</number>
+	</property>
+	<property name="spacing" >
+	  <number>6</number>
+	</property>
+
+	<item row="0" column="0" colspan="3" >
+	  <widget class="QMenuBar" name="My_menu">
+	    <property name="geometry">
+	      <rect>
+		<x>0</x>
+		<y>0</y>
+		<width>135</width>
+		<height>94</height>
+	      </rect>
+	    </property>
+	    <widget class="QMenu" name="menu_file">
+	      <property name="title">
+		<string>File</string>
+	      </property>
+	      <addaction name="action_open"/>
+<!--	      <addaction name="action_test"/>  -->
+	      <addaction name="action_exit"/>
+	    </widget>
+	    <action name="action_open">
+	      <property name="icon" >
+		<iconset>document-open</iconset>
+	      </property>
+	      <property name="text">
+		<string>Open</string>
+	      </property>
+	      <property name="shortcut">
+		<string>Ctrl+O</string>
+	      </property>
+	    </action>
+	    <action name="action_test">
+	      <property name="text">
+		<string>Test</string>
+	      </property>
+	    </action>
+	    <action name="action_exit">
+	      <property name="text">
+		<string>Quit</string>
+	      </property>
+	      <property name="shortcut">
+		<string>Ctrl+Q</string>
+	      </property>
+	    </action>
+
+	    <widget class="QMenu" name="menu_edit">
+	      <property name="title">
+		<string>Edit</string>
+	      </property>
+	      <addaction name="action_find"/>
+	    </widget>
+	    <action name="action_find">
+	      <property name="text">
+		<string>Find</string>
+	      </property>
+	      <property name="shortcut">
+		<string>Ctrl+F</string>
+	      </property>
+	      
+	    </action>
+	    
+	    <widget class="QMenu" name="menu_configuration">
+	      <property name="title">
+		<string>Configuration</string>
+	      </property>
+	      <addaction name="action_configation_open"/>
+	      <addaction name="action_configation_general"/>
+	      <addaction name="action_configation_filter"/>
+	    </widget>
+
+	    <action name="action_configation_open">
+	      <property name="text">
+		<string>Open Configration</string>
+	      </property>
+	    </action>
+	    <action name="action_configation_filter">
+	      <property name="text">
+		<string>Filter Configration</string>
+	      </property>
+	    </action>
+	    <action name="action_configation_general">
+	      <property name="text">
+		<string>General Configration (FIXME)</string>
+	      </property>
+	    </action>
+
+
+	    <action name="actionA">
+	      <property name="text">
+		<string>a</string>
+	      </property>
+	    </action>
+	    <action name="actionB">
+	      <property name="text">
+		<string>b</string>
+	      </property>
+	    </action>
+	    <addaction name="menu_file"/>
+	    <addaction name="menu_edit"/>
+	    <addaction name="menu_configuration"/>
+	  </widget>
+	</item>
+
+	<item row="1" column="0" colspan="3"  rowspan="100">
+	  <widget class="QSplitter" name="splits" >
+	    <property name="sizePolicy">
+	      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+		<horstretch>0</horstretch>
+		<verstretch>0</verstretch>
+	      </sizepolicy>
+	    </property>
+
+
+	    <widget class="QWidget" name="">
+	      <layout class="QVBoxLayout" name="verticalLayout">
+		<item>
+		  <widget class="QWidget" name="FindArea">
+		    
+		  <layout class="QHBoxLayout" name="nothing3">
+
+		    <item>
+		      <widget class="QLabel" name="label_3">
+			<property name="text">
+			  <string>Find</string>
+			</property>
+		      </widget>
+		    </item>
+
+		    <item>
+		      <widget class="QLineEdit" name="find"/>
+		    </item>
+
+		    <item>
+		      <widget class="QPushButton" name="closeFindAreaButton">
+			<property name="sizePolicy">
+			  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+			    <horstretch>0</horstretch>
+			    <verstretch>0</verstretch>
+			  </sizepolicy>
+			</property>
+			<property name="text">
+			  <string>X</string>
+			</property>
+		      </widget>
+		    </item>
+		    
+		  </layout>
+		  </widget>
+		</item>
+		<item>
+		  <widget class="QTreeView" name="tree" />
+		</item>
+	      </layout>
+	    </widget>
+
+	    <action name="action_show_find_area">
+	      <property name="text">
+		<string>Find...</string>
+	      </property>
+	      <property name="shortcut">
+		<string>Ctrl+F</string>
+	      </property>
+	    </action>
+	    
+	    <widget class="QWebView"  name="web" />
+
+	  </widget>
+	</item>
+
+<!--	
+	<item row="1" column="2" >
+	  <widget class="QPushButton" name="pushButton_2" >
+	    <property name="text" >
+	      <string>Close</string>
+	    </property>
+	  </widget>
+	</item>
+	<item row="1" column="0" >
+	  <widget class="QPushButton" name="button_open" >
+	    <property name="text" >
+	      <string>Open File</string>
+	    </property>
+	  </widget>
+	</item>
+-->
+
+      </layout>
+    </widget>
+    
+    <widget class="QMenuBar" name="menubar" >
+      <property name="geometry" >
+	<rect>
+	  <x>0</x>
+	  <y>0</y>
+	  <width>560</width>
+	  <height>26</height>
+	</rect>
+      </property>
+    </widget>
+    <widget class="QStatusBar" name="statusbar" />
+    
+  </widget>
+
+
+  
+  <resources/>
+
+  
+  <connections>
+
+<!--    
+    <connection>
+      <sender>pushButton_2</sender>
+      <signal>clicked()</signal>
+      <receiver>batpyqtgui</receiver>
+      <slot>close()</slot>
+      <hints>
+	<hint type="sourcelabel" >
+	  <x>322</x>
+	  <y>49</y>
+	</hint>
+	<hint type="destinationlabel" >
+	  <x>334</x>
+	  <y>29</y>
+	</hint>
+      </hints>
+    </connection>
+-->
+
+    <connection>
+      <sender>action_open</sender>
+      <signal>triggered()</signal>
+      <receiver>batpyqtgui</receiver>
+      <slot>onOpenFile()</slot>
+    </connection>
+
+    <connection>
+      <sender>action_exit</sender>
+      <signal>triggered()</signal>
+      <receiver>batpyqtgui</receiver>
+      <slot>close()</slot>
+    </connection>
+    
+    <connection>
+      <sender>action_configation_filter</sender>
+      <signal>triggered()</signal>
+      <receiver>batpyqtgui</receiver>
+      <slot>onOpenFilterDialog()</slot>
+    </connection>
+
+    <connection>
+      <sender>action_configation_open</sender>
+      <signal>triggered()</signal>
+      <receiver>batpyqtgui</receiver>
+      <slot>onConfigurationOpen()</slot>
+    </connection>
+
+    <connection>
+      <sender>action_find</sender>
+      <signal>triggered()</signal>
+      <receiver>FindArea</receiver>
+      <slot>show()</slot>
+    </connection>
+    <connection>
+      <sender>action_find</sender>
+      <signal>triggered()</signal>
+      <receiver>find</receiver>
+      <slot>setFocus()</slot>
+    </connection>
+
+    
+    
+  <connection>
+   <sender>closeFindAreaButton</sender>
+   <signal>pressed()</signal>
+   <receiver>FindArea</receiver>
+   <slot>hide()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>closeFindAreaButton</sender>
+   <signal>pressed()</signal>
+   <receiver>batpyqtgui</receiver>
+   <slot>onFindClosed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>170</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+
+    
+  
+  </connections>
+</ui>
