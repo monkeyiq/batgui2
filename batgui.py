@@ -16,7 +16,7 @@ This is a program for viewing results of the Binary Analysis Tool.
 
 import sys, os, string, gzip, cPickle, bz2, tarfile, tempfile, copy
 from   optparse import OptionParser
-from enum       import Enum
+#from enum       import Enum
 from os.path    import isfile
 import ConfigParser
 from batpyqtgui             import Ui_batpyqtgui
@@ -35,7 +35,7 @@ import sqlite3, cgi
     Each column in the batgui.treeview is described here, some of the columns are
     not displayed and are for internal use only
 '''
-class MainTreeCol(Enum):
+class MainTreeCol: #(Enum):
     Name  = 0    # Shown: decorated file name that is shown in the tree
     Mask  = 1    # Shown: mask describing object, like a circled D for directories
     Path  = 2    # full path of the file/dir
@@ -50,7 +50,7 @@ def QMIToPath(proxyModel,qmi):
     Given a QModelIndex and the model that it belongs too return the path
     associated with that model index
     """
-    qmi = qmi.sibling(qmi.row(),MainTreeCol.Path.value);
+    qmi = qmi.sibling(qmi.row(),MainTreeCol.Path);
     bb = proxyModel.data(qmi)
     return bb;
 
@@ -217,9 +217,9 @@ class StartBATGUI(QMainWindow):
 
             qmi = PathToQMI(self.proxyModel,key)
             print "AAA qmi: ", qmi
-            print "AAA qmi.v: ", QMIToValue( self.proxyModel, qmi, MainTreeCol.HexdumpExtractFailed.value )
-            if QMIToValue( self.proxyModel, qmi, MainTreeCol.HexdumpExtractFailed.value ) != 1:
-                QMISetValue( self.proxyModel, qmi, MainTreeCol.HexdumpExtractFailed.value, 1 )
+            print "AAA qmi.v: ", QMIToValue( self.proxyModel, qmi, MainTreeCol.HexdumpExtractFailed )
+            if QMIToValue( self.proxyModel, qmi, MainTreeCol.HexdumpExtractFailed ) != 1:
+                QMISetValue( self.proxyModel, qmi, MainTreeCol.HexdumpExtractFailed, 1 )
 
                 reportpath = "reports/%s-%s.gz" % (sha256sum,page)
                 print "reportpath:", reportpath
@@ -579,21 +579,21 @@ class StartBATGUI(QMainWindow):
 
                     
                 self.treeview  = self.ui.tree
-                self.treemodel = QStandardItemModel(0,MainTreeCol._Max.value,parent)
+                self.treemodel = QStandardItemModel(0,MainTreeCol._Max,parent)
                 self.proxyModel = myTreeFilterProxyModel(self)
                 self.proxyModel.setSourceModel( self.treemodel )
                 self.treeview.setModel( self.proxyModel )
                 regExp = QRegExp(".*", Qt.CaseSensitive, QRegExp.PatternSyntax(QRegExp.RegExp))
                 self.proxyModel.setFilterRegExp(regExp)
                 self.proxyModel.setFilterKeyColumn( 0 )
-                self.treemodel.setHeaderData( MainTreeCol.Name.value,  Qt.Horizontal, "Name")
-                self.treemodel.setHeaderData( MainTreeCol.Mask.value,  Qt.Horizontal, "Masks")
-                self.treemodel.setHeaderData( MainTreeCol.Extra.value, Qt.Horizontal, "Extra")
-                self.treemodel.setHeaderData( MainTreeCol.Path.value,  Qt.Horizontal, "FullPath")
-                self.treemodel.setHeaderData( MainTreeCol.HexdumpExtractFailed.value,  Qt.Horizontal, "HexdumpExtractFailed")
-                self.treeview.setColumnHidden( MainTreeCol.Extra.value, True )
-                self.treeview.setColumnHidden( MainTreeCol.Path.value,  True )
-                self.treeview.setColumnHidden( MainTreeCol.HexdumpExtractFailed.value,  True )
+                self.treemodel.setHeaderData( MainTreeCol.Name,  Qt.Horizontal, "Name")
+                self.treemodel.setHeaderData( MainTreeCol.Mask,  Qt.Horizontal, "Masks")
+                self.treemodel.setHeaderData( MainTreeCol.Extra, Qt.Horizontal, "Extra")
+                self.treemodel.setHeaderData( MainTreeCol.Path,  Qt.Horizontal, "FullPath")
+                self.treemodel.setHeaderData( MainTreeCol.HexdumpExtractFailed,  Qt.Horizontal, "HexdumpExtractFailed")
+                self.treeview.setColumnHidden( MainTreeCol.Extra, True )
+                self.treeview.setColumnHidden( MainTreeCol.Path,  True )
+                self.treeview.setColumnHidden( MainTreeCol.HexdumpExtractFailed,  True )
 #                self.treeview.clicked.connect(self.onTreeClicked);
                 self.treeview.selectionModel().currentChanged.connect(self.onTreeClicked);
                 #self.treeview.header.resizeColumnToContents(1)
